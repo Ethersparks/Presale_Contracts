@@ -30,7 +30,7 @@ pragma solidity ^0.4.23;
          if (_isReferralLootCrate)
             dna = dna | 0x01;
         else
-            dna = dna & 0x00;
+            dna =  dna & (uint(-1) - 1);
          return dna;
     }
     
