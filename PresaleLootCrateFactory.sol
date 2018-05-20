@@ -5,6 +5,9 @@ pragma solidity ^0.4.23;
  * This contract defines a loot crate and is in charge of creating the loot crates during presale.
  */
  contract PresaleLootCrateFactory {
+     
+     event NewLootCrate(uint lootCrateId, uint dna);
+     
      uint dnaDigits = 16; // should allow for sufficient variability during the presale creation of lootboxes
      uint dnaMod = 10 ** dnaDigits;
      
@@ -15,6 +18,10 @@ pragma solidity ^0.4.23;
      }
      
     LootCrate[] public lootCrates;
+    
+    // Mapping data structs
+    mapping (uint => address) public lootCrateToOwner;
+    mapping (address => uint) ownerLootCrateCount;
     
     function generateLootCrateDna(bool _isReferralLootCrate) private view returns (uint) {
         /**
@@ -40,11 +47,11 @@ pragma solidity ^0.4.23;
          * uniqueIdCounter is incremented to ensure unique loot crates are generated.
          */
          uint dna = generateLootCrateDna(_isReferralLootCrate);
-         lootCrates.push(LootCrate(dna));
+         uint id = lootCrates.push(LootCrate(dna)) - 1;
+         lootCrateToOwner[id] = msg.sender;
+         ownerLootCrateCount[msg.sender]++;
          uniqueIdCounter++;
+         emit NewLootCrate(id, dna);
     }
     
-    
-    
-     
  }
