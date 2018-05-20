@@ -34,6 +34,16 @@ pragma solidity ^0.4.23;
          return dna;
     }
     
+    function createLootCrate(bool _isReferralLootCrate) private {
+         /**
+         * If _isReferralLootCrate is true, a referral typed loot crate will be created.
+         * uniqueIdCounter is incremented to ensure unique loot crates are generated.
+         */
+         uint dna = generateLootCrateDna(_isReferralLootCrate);
+         lootCrates.push(LootCrate(dna));
+         uniqueIdCounter++;
+    }
+    
     
     
      
